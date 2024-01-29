@@ -29,7 +29,8 @@ class AuthTestify:
     async def run_tests(self):
         logging.info("Starting authentication tests...")
         credentials = {"login": self.correct_login, "password": self.correct_password}
-        scenarios = basic_auth_scenarios(credentials)
+        fields = {"login": self.login_field, "password": self.password_field}
+        scenarios = basic_auth_scenarios(credentials, fields)
         success_count = 0
         failure_count = 0
 
