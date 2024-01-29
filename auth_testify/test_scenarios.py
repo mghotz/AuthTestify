@@ -34,4 +34,16 @@ def basic_auth_scenarios(correct_credentials, fields):
             "password": "ololo-HTML-XSS",
             "expected": {"status_code": 400},
         },
+        {
+            "login": ''.join(['\\u{:04x}'.format(ord(char)) for char in correct_credentials["login"]]),
+            "password": ''.join(['\\u{:04x}'.format(ord(char)) for char in correct_credentials["password"]]),
+            "expected": {"status_code": 200},
+        },
+        {
+            "login": "ad\\nmin",
+            "password": "pa\\ssword",
+            "expected": {"status_code": 401},
+        },
+        {"login": " ", "password": " ", "expected": {"status_code": 400}},
+        {"login": "a"*10000, "password": "b"*10000, "expected": {"status_code": 413}},
     ]
