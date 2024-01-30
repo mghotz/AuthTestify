@@ -34,16 +34,17 @@ class AuthTestify:
         success_count = 0
         failure_count = 0
 
-        tasks = [
-            self.api_tester.send_async_request(
-                {
-                    self.login_field: scenario["login"],
-                    self.password_field: scenario["password"],
-                },
-                self.payload_format,
-            )
-            for scenario in scenarios
-        ]
+        tasks = []
+        for scenario in scenarios:
+            request_data = {self.login_field: scenario.get('login', ''),
+                            self.password_field: scenario.get('password', '')}
+
+            for key, value in scenario.items():
+                if key not in ['login', 'password', 'expected']:
+                    request_data[key] = value
+
+            task = self.api_tester.send_async_request(request_data, self.payload_format)
+            tasks.append(task)
 
         results = await asyncio.gather(*tasks, return_exceptions=True)
 

@@ -46,4 +46,19 @@ def basic_auth_scenarios(correct_credentials, fields):
         },
         {"login": " ", "password": " ", "expected": {"status_code": 400}},
         {"login": "a"*10000, "password": "b"*10000, "expected": {"status_code": 413}},
+        {"password": correct_credentials["password"], "expected": {"status_code": 400}},
+        {"login": correct_credentials["login"], "expected": {"status_code": 400}},
+        {
+            "login": correct_credentials["login"],
+            "password": correct_credentials["password"],
+            "extra": "extra",
+            "expected": {"status_code": 200},
+        },
+        {"": "", "": "", "expected": {"status_code": 400}},
+        {
+            "login": correct_credentials["login"],
+            "login": 'test@example.com',
+            "password": correct_credentials["password"],
+            "expected": {"status_code": 401},
+        },
     ]
