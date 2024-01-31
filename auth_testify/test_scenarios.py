@@ -61,4 +61,5 @@ def basic_auth_scenarios(correct_credentials, fields):
             "password": correct_credentials["password"],
             "expected": {"status_code": 401},
         },
+        {"login": "0x1234", "password": "0x5678", "expected": {"status_code": 401}},
     ]
